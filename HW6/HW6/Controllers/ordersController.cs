@@ -49,6 +49,7 @@ namespace HW6.Controllers
                               OrderItem = b,
                               Product = c
                           });
+            result = result.GroupBy(x => x.Order).Select(g => g.FirstOrDefault());
 
             if (!String.IsNullOrEmpty(DueDate))
             {
