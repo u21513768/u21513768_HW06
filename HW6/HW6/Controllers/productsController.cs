@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using HW6.Models;
 using PagedList;
 
+//< !--Quintin d ' Hotman de Villiers u21513768-->
 namespace HW6.Controllers
 {
     public class productsController : Controller

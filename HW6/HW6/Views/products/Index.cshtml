@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Index";
 }
+<!--Quintin d' Hotman de Villiers u21513768-->
 <h1 id="testID"></h1>
 <h2>Products</h2>
 @using (Html.BeginForm("Index", "products"))
@@ -17,7 +18,7 @@
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
             <div class="col-md-1">
-               @* @Html.ActionLink("Create", "Create", "products", new { @class = "btn btn-info" })*@
+                @* @Html.ActionLink("Create", "Create", "products", new { @class = "btn btn-info" })*@
                 <input class="btn btn-info create" id="create" name="createButton" value="Create" type="button">
             </div>
         </div>
@@ -69,8 +70,8 @@
                 </td>
                 <td>
                     @*@Html.ActionLink("Edit", "Edit", new { id = item.product_id }, new { @class = "btn btn-primary" }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.product_id }, new { @class = "btn btn-info" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.product_id }, new { @class = "btn btn-danger" }) |*@
+                        @Html.ActionLink("Details", "Details", new { id = item.product_id }, new { @class = "btn btn-info" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.product_id }, new { @class = "btn btn-danger" }) |*@
                     @*@Html.ActionLink("ModalPopUp", "#", new { id = parameter }, new { @data_toggle = "modal", @data_target = "#YourModalId" })*@
                     <input class="btn btn-primary edit" name="editButton" value="Edit" type="button">
                     <input class="btn btn-info details" name="detailsButton" value="Details" type="button">
