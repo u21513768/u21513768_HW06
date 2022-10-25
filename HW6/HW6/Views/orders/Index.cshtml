@@ -1,0 +1,95 @@
+﻿@model PagedList.IPagedList<HW6.Models.OrderDetails>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Index", "orders"))
+{
+    <div class="form-group">
+
+        <div class="col-md-10">
+            <input name="DueDate" type="date" id="datepicker" class="form-control col-md-3" placeholder="Search By Date" />
+            <input type="submit" value="Search" class="btn btn-primary col-md-1" />
+        </div>
+    </div>
+    <br />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(document).ready(function () { $("#datepicker").datepicker({}); });
+    </script>
+    <hr />
+    {
+        decimal total = 0;
+        foreach (var item in Model)
+        {
+            {
+                var title = "Order " + @item.Order.order_id + " - " + item.Order.order_date.ToShortDateString();
+                <h3>@title</h3>
+            }
+            <table class="table">
+                <tr>
+                    <th>Product Name</th>
+                    <th>List Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+
+            @foreach (var product in item.Order.order_items)
+             {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => product.product.product_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => product.list_price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => product.quantity)
+                    </td>
+                    @{
+                        var prodTotal = product.quantity * product.list_price;
+                        total += prodTotal;
+                        <td>
+                            @prodTotal
+                        </td>
+                    }
+                    </tr>
+                    }
+               
+            </table>
+            <table class="table">
+                <tr>
+                     <th style="text-align: right" >Grand Total: @total</th>
+                </tr>
+            </table>
+        }
+    }
+    <br />
+    <br />
+    <table class="table-condensed" width="100%" align="center">
+        <thead>
+            <tr>
+                <td>
+                    <p>
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilterTextbox = ViewBag.CurrentFilterTextbox }))
+                    </p>
+                </td>
+            </tr>
+        </thead>
+    </table>
+    <script type="text/javascript">
+        $(function () {
+            $('#SelectedDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+            });
+        });
+    </script>
+}
+

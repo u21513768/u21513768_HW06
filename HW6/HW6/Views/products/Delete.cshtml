@@ -1,0 +1,99 @@
+﻿@model HW6.Models.product
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<script type="text/javascript">
+        $(document).ready(() => {
+            $(function () {
+                $("#btnSave").click(function () {
+                    var product_id = $("#product_id").val();
+                    //alert(product_id);
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Delete")',
+                        data: { "id": product_id },
+                        success: function (response) {
+                            console.log("Success " + response);
+                            window.location.href = response.redirectToUrl;
+                        },
+                        failure: function (response) {
+                            alert("Failure " + response.responseText);
+                            console.log(response.responseText);
+                        },
+                        error: function (response) {
+                            alert("Error " + response.responseText);
+                            console.log(response.responseText);
+                        }
+                    });
+                });
+            });
+        });
+</script>
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt hidden>@Html.HiddenFor(model => model.product_id)</dt>
+        <dt>
+           @* @Html.DisplayNameFor(model => model.product_name)*@
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.product_name)
+        </dd>
+
+        <dt>
+           @* @Html.DisplayNameFor(model => model.model_year)*@
+            Year
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.model_year)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.list_price)*@
+            Price
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.list_price)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.brand.brand_name)*@
+            Brand
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.brand.brand_name)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.category.category_name)*@
+            Category
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.category.category_name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @*@Html.AntiForgeryToken()*@
+
+        <div class="form-actions no-color">
+            <input class="btn btn-primary" name="submitButton" id="btnSave" value="Delete" type="button"> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

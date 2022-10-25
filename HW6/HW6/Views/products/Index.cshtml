@@ -1,0 +1,214 @@
+﻿@model PagedList.IPagedList<HW6.Models.product>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+}
+<h1 id="testID"></h1>
+<h2>Index</h2>
+@using (Html.BeginForm("Index", "products"))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                @Html.TextBox("TextboxSearchString", ViewBag.CurrentFilterTextbox as string, new { @class = "form-control", @placeholder = "Enter Product Name..." })
+            </div>
+            <div class="col-md-1">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+            <div class="col-md-1">
+               @* @Html.ActionLink("Create", "Create", "products", new { @class = "btn btn-info" })*@
+                <input class="btn btn-info create" id="create" name="createButton" value="Create" type="button">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <table class="table" id="BikeGrid">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.product_name)*@
+                Name
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.model_year)*@
+                Year
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.list_price)*@
+                Price
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.brand.brand_name)*@
+                Brand
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.category.category_name)*@
+                Category
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td hidden>@item.product_id</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.product_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.model_year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.list_price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.brand.brand_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.category.category_name)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.product_id }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.product_id }, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.product_id }, new { @class = "btn btn-danger" }) |*@
+                    @*@Html.ActionLink("ModalPopUp", "#", new { id = parameter }, new { @data_toggle = "modal", @data_target = "#YourModalId" })*@
+                    <input class="btn btn-primary edit" name="editButton" value="Edit" type="button">
+                    <input class="btn btn-info details" name="detailsButton" value="Details" type="button">
+                    <input class="btn btn-danger delete" name="deleteButton" value="Delete" type="button">
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <table class="table-condensed" width="100%" align="center">
+        <thead>
+            <tr>
+                <td>
+                    <p>
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilterTextbox = ViewBag.CurrentFilterTextbox }))
+                    </p>
+                </td>
+            </tr>
+        </thead>
+    </table>
+}
+<div id="partialModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<h5 class="modal-title">Customer Details Form</h5>*@
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $(function () {
+                 $("#create").click(function () {
+                    //var product_id = $(this).closest("tr").find("td").eq(0).html();
+                    //console.log(product_id);
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("Create")',
+                        //data: { "id": product_id },
+                        success: function (response) {
+                            //console.log(response);
+                            $("#partialModal").find(".modal-body").html(response);
+                            $("#partialModal").modal('show');
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        }
+                    });
+                });
+
+                $("#BikeGrid .edit").click(function () {
+                    var product_id = $(this).closest("tr").find("td").eq(0).html();
+                    console.log(product_id);
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("Edit")',
+                        data: { "id": product_id },
+                        success: function (response) {
+                            //console.log(response);
+                            $("#partialModal").find(".modal-body").html(response);
+                            $("#partialModal").modal('show');
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        }
+                    });
+                });
+
+                $("#BikeGrid .details").click(function () {
+                    var product_id = $(this).closest("tr").find("td").eq(0).html();
+                    console.log(product_id);
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Details")',
+                        data: { "id": product_id },
+                        success: function (response) {
+                            //console.log(response);
+                            $("#partialModal").find(".modal-body").html(response);
+                            $("#partialModal").modal('show');
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        }
+                    });
+                });
+
+                $("#BikeGrid .delete").click(function () {
+                    var product_id = $(this).closest("tr").find("td").eq(0).html();
+                    console.log(product_id);
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("Delete")',
+                        data: { "id": product_id },
+                        success: function (response) {
+                            //console.log(response);
+                            $("#partialModal").find(".modal-body").html(response);
+                            $("#partialModal").modal('show');
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                            console.log(response.responseText);
+                        }
+                    });
+                });
+            });
+
+        });
+    </script>
+}

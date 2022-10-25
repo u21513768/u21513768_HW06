@@ -1,0 +1,103 @@
+﻿@model HW6.Models.product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product Info</h4>
+    <hr />
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">
+                    @Html.DisplayFor(model => model.product_name)
+                </th>
+        </thead>
+        <tbody>
+            <tr>
+                
+                <td>
+                    <dl class="dl-horizontal">
+                        <dt><br />
+                            @*@Html.DisplayNameFor(model => model.product_name)*@
+                            Name
+                        </dt>
+
+                        <dd><br />
+                            @Html.DisplayFor(model => model.product_name)
+                        </dd>
+
+                        <dt>
+                            @*@Html.DisplayNameFor(model => model.model_year)*@
+                            Year
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.model_year)
+                        </dd>
+
+                        <dt>
+                            @*@Html.DisplayNameFor(model => model.list_price)*@
+                            Price
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.list_price)
+                        </dd>
+
+                        <dt>
+                            @*@Html.DisplayNameFor(model => model.brand.brand_name)*@
+                            Brand
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.brand.brand_name)
+                        </dd>
+
+                        <dt>
+                            @*@Html.DisplayNameFor(model => model.category.category_name)*@
+                            Category
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.category.category_name) <br />
+                        </dd>
+
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Store</th>
+                <th scope="col">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.stocks)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.store.store_name)
+                    </td>
+                    @{
+                        if (item.quantity > 0)
+                        {
+                            <td>@Html.DisplayFor(modelItem => item.quantity)</td>
+                        }
+                        else
+                        {
+                            <td style="color: red">Out of stock</td>
+                        }
+                    }
+                     </tr>
+            }
+            </tbody>
+    </table>
+</div>
+    
